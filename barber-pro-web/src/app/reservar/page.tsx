@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -32,6 +32,14 @@ interface UserProfile {
 }
 
 export default function ReservarPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-amber-500 font-bold uppercase tracking-widest">Cargando...</div>}>
+      <ReservarContent />
+    </Suspense>
+  )
+}
+
+function ReservarContent() {
   const [step, setStep] = useState(1)
   const [servicios, setServicios] = useState<Servicio[]>([])
   const [barberos, setBarberos] = useState<Barbero[]>([])
