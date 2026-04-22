@@ -39,10 +39,18 @@ interface Servicio {
   duracion_minutos: number
 }
 
+interface Producto {
+  id: string
+  nombre: string
+  precio_venta: number
+  image_url: string | null
+}
+
 export default function HomePage() {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [servicios, setServicios] = useState<Servicio[]>([])
+  const [productos, setProductos] = useState<Producto[]>([])
   const router = useRouter()
   const supabase = createClient()
 
@@ -72,6 +80,18 @@ export default function HomePage() {
 
       if (serviciosData) {
         setServicios(serviciosData)
+      }
+
+      // 3. Cargar Productos Destacados
+      const { data: prodsData } = await supabase
+        .from('productos')
+        .select('id, nombre, precio_venta, image_url')
+        .eq('is_active', true)
+        .gt('stock_actual', 0)
+        .limit(4)
+
+      if (prodsData) {
+        setProductos(prodsData)
       }
 
       setLoading(false)
@@ -187,7 +207,7 @@ export default function HomePage() {
                     Login
                   </Link>
                   <Link 
-                    href="/register" 
+                    href="/reservar" 
                     className="px-6 py-2 bg-amber-400 text-black rounded-full hover:bg-amber-300 transition uppercase text-sm font-bold tracking-widest"
                   >
                     Reservar
@@ -235,7 +255,7 @@ export default function HomePage() {
               </Link>
             ) : (
               <Link 
-                href="/register" 
+                href="/reservar" 
                 className="inline-flex items-center justify-center gap-2 bg-amber-400 text-black px-8 py-4 rounded-full font-bold hover:bg-amber-300 transition transform hover:scale-105 uppercase tracking-widest"
               >
                 <Calendar className="w-5 h-5" />
@@ -407,8 +427,51 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Tienda Pro Destacados */}
+      {productos.length > 0 && (
+        <section id="tienda" className="py-24 bg-black border-t border-white/5">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-16">
+              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Grooming Premium</p>
+              <h2 className="text-5xl font-bold">Tienda Pro</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {productos.map((producto) => (
+                <div key={producto.id} className="bg-zinc-900/50 rounded-2xl overflow-hidden border border-white/5 group hover:border-amber-500/30 transition-all">
+                  <div className="aspect-square bg-zinc-800 relative overflow-hidden">
+                    <img 
+                      src={producto.image_url || 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500'} 
+                      alt={producto.nombre}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="text-lg font-bold mb-2 line-clamp-1">{producto.nombre}</h3>
+                    <p className="text-amber-500 font-black text-xl mb-4">{formatCurrency(producto.precio_venta)}</p>
+                    <Link href="/tienda" className="inline-block w-full py-2 bg-white/5 hover:bg-amber-500 hover:text-black rounded-lg text-sm font-bold uppercase tracking-widest transition-colors border border-white/10 hover:border-amber-500">
+                      Ver Detalles
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16 text-center">
+              <Link 
+                href="/tienda" 
+                className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-amber-500 text-amber-500 px-8 py-4 rounded-full font-bold hover:bg-amber-500 hover:text-black transition uppercase tracking-widest"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                Catálogo Completo
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Equipo */}
-            <section id="equipo" className="py-24 bg-zinc-900">
+      <section id="equipo" className="py-24 bg-zinc-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Nuestro Equipo</p>
