@@ -21,13 +21,13 @@ interface PortafolioItem {
 
 export default function AdminPortafolioPage() {
   const [items, setItems] = useState<PortafolioItem[]>([])
-  const [barberos, setBarberos] = useState<{id: string, full_name: string}[]>([])
+  const [barberos, setBarberos] = useState<{ id: string, full_name: string }[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [formData, setFormData] = useState({
     image_url: '', categoria: 'Fade', descripcion: '', barbero_id: ''
   })
-  
+
   const router = useRouter()
   const supabase = createClient()
 
@@ -92,7 +92,7 @@ export default function AdminPortafolioPage() {
       <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-white/5 pb-8">
         <div className="flex items-center gap-6">
           <button onClick={() => router.push('/admin')} className="p-4 hover:bg-white/5 border border-white/5 bg-zinc-950 rounded-2xl transition-all btn-press group">
-             <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-amber-500" />
+            <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-amber-500" />
           </button>
           <div>
             <h1 className="text-4xl font-black tracking-tight text-white uppercase leading-none">
@@ -108,48 +108,48 @@ export default function AdminPortafolioPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-         {items.map(item => (
-            <Card key={item.id} className="group relative overflow-hidden bg-zinc-900 border-white/5 shadow-2xl transition-all card-hover rounded-3xl">
-               <div className="aspect-[4/5] bg-zinc-800 relative overflow-hidden">
-                  <img src={item.image_url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={item.descripcion} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60"></div>
-                  
-                  <Badge variant="warning" className="absolute top-4 left-4 bg-amber-500 text-black border-none uppercase font-black text-[10px] tracking-widest px-3 py-1 shadow-xl">
-                    {item.categoria}
-                  </Badge>
+        {items.map(item => (
+          <Card key={item.id} className="group relative overflow-hidden bg-zinc-900 border-white/5 shadow-2xl transition-all card-hover rounded-3xl">
+            <div className="aspect-[4/5] bg-zinc-800 relative overflow-hidden">
+              <img src={item.image_url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={item.descripcion} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60"></div>
 
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
-                    <button 
-                      onClick={() => deleteItem(item.id)} 
-                      className="w-14 h-14 rounded-full bg-red-500 text-white flex items-center justify-center shadow-2xl hover:bg-red-600 transition-colors transform translate-y-4 group-hover:translate-y-0 duration-300"
-                    >
-                      <Trash2 className="w-6 h-6"/>
-                    </button>
-                  </div>
-               </div>
-               
-               <CardContent className="p-6">
-                  <p className="text-sm font-bold text-zinc-300 mb-4 line-clamp-2 min-h-[40px] leading-relaxed italic">"{item.descripcion}"</p>
-                  <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                    <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-[10px] font-black uppercase text-amber-500">
-                       {barberos.find(b => b.id === item.barbero_id)?.full_name.charAt(0) || '?'}
-                    </div>
-                    <div>
-                       <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest leading-none mb-1">Autor</p>
-                       <p className="text-xs font-black text-white uppercase tracking-tight">
-                         {barberos.find(b => b.id === item.barbero_id)?.full_name || 'Staff Pro'}
-                       </p>
-                    </div>
-                  </div>
-               </CardContent>
-            </Card>
-         ))}
+              <Badge variant="warning" className="absolute top-4 left-4 bg-amber-500 text-black border-none uppercase font-black text-[10px] tracking-widest px-3 py-1 shadow-xl">
+                {item.categoria}
+              </Badge>
+
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-sm">
+                <button
+                  onClick={() => deleteItem(item.id)}
+                  className="w-14 h-14 rounded-full bg-red-500 text-white flex items-center justify-center shadow-2xl hover:bg-red-600 transition-colors transform translate-y-4 group-hover:translate-y-0 duration-300"
+                >
+                  <Trash2 className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+
+            <CardContent className="p-6">
+              <p className="text-sm font-bold text-zinc-300 mb-4 line-clamp-2 min-h-[40px] leading-relaxed italic">"{item.descripcion}"</p>
+              <div className="flex items-center gap-3 pt-4 border-t border-white/5">
+                <div className="w-8 h-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-[10px] font-black uppercase text-amber-500">
+                  {barberos.find(b => b.id === item.barbero_id)?.full_name.charAt(0) || '?'}
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest leading-none mb-1">Autor</p>
+                  <p className="text-xs font-black text-white uppercase tracking-tight">
+                    {barberos.find(b => b.id === item.barbero_id)?.full_name || 'Staff Pro'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-      
+
       {items.length === 0 && (
         <div className="py-32 text-center border-2 border-dashed border-white/5 rounded-3xl">
-           <Camera size={64} className="mx-auto text-zinc-800 mb-4 opacity-30" />
-           <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">El portafolio está listo para ser inaugurado</p>
+          <Camera size={64} className="mx-auto text-zinc-800 mb-4 opacity-30" />
+          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">El portafolio está listo para ser inaugurado</p>
         </div>
       )}
 
@@ -160,12 +160,12 @@ export default function AdminPortafolioPage() {
             <CardHeader className="flex flex-row items-center justify-between border-b border-white/5 p-8 bg-zinc-900/50">
               <div>
                 <CardTitle className="text-2xl font-black uppercase text-white leading-none">
-                   Subir a <span className="text-amber-500">Exposición</span>
+                  Subir a <span className="text-amber-500">Exposición</span>
                 </CardTitle>
                 <p className="text-zinc-500 text-xs mt-2 font-medium">Publica los resultados de tus mejores sesiones</p>
               </div>
-              <button 
-                onClick={() => { setShowModal(false); }} 
+              <button
+                onClick={() => { setShowModal(false); }}
                 className="p-3 hover:bg-white/5 rounded-2xl transition-colors border border-white/5"
               >
                 <X className="w-6 h-6 text-zinc-500" />
@@ -181,13 +181,13 @@ export default function AdminPortafolioPage() {
                   onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                   className="bg-zinc-900"
                 />
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Categoría Estética</label>
                     <div className="relative">
-                      <select 
-                        required 
+                      <select
+                        required
                         className="h-14 w-full border border-white/10 bg-zinc-900 rounded-2xl px-4 text-sm font-black text-white focus:border-amber-500/50 outline-none transition-all appearance-none uppercase"
                         value={formData.categoria}
                         onChange={(e) => setFormData({ ...formData, categoria: e.target.value })}
@@ -201,8 +201,8 @@ export default function AdminPortafolioPage() {
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Barbero Asociado</label>
                     <div className="relative">
-                      <select 
-                        required 
+                      <select
+                        required
                         className="h-14 w-full border border-white/10 bg-zinc-900 rounded-2xl px-4 text-sm font-black text-white focus:border-amber-500/50 outline-none transition-all appearance-none uppercase"
                         value={formData.barbero_id}
                         onChange={(e) => setFormData({ ...formData, barbero_id: e.target.value })}
@@ -230,25 +230,25 @@ export default function AdminPortafolioPage() {
                 {/* Image Preview if URL exists */}
                 {formData.image_url && (
                   <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/5 bg-zinc-950">
-                     <img src={formData.image_url} className="w-full h-full object-cover opacity-50" />
-                     <div className="absolute inset-0 flex items-center justify-center">
-                        <Badge variant="outline" className="text-zinc-400 font-bold uppercase text-[10px] tracking-widest">Vista Previa Active</Badge>
-                     </div>
+                    <img src={formData.image_url} className="w-full h-full object-cover opacity-50" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Badge variant="outline" className="text-zinc-400 font-bold uppercase text-[10px] tracking-widest">Vista Previa Active</Badge>
+                    </div>
                   </div>
                 )}
               </CardContent>
               <div className="p-8 bg-zinc-900/30 border-t border-white/5 flex gap-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   className="flex-1 h-14 border-white/5 text-zinc-500 hover:text-white uppercase font-black tracking-widest text-[10px]"
                   onClick={() => { setShowModal(false); }}
                 >
                   Descartar
                 </Button>
-                <Button 
-                  type="submit" 
-                  variant="primary" 
+                <Button
+                  type="submit"
+                  variant="primary"
                   className="flex-1 h-14 shadow-lg shadow-amber-500/20 uppercase font-black tracking-widest"
                 >
                   <Save className="w-4 h-4 mr-2" />

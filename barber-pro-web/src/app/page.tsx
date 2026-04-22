@@ -5,12 +5,12 @@ import { createClient } from '@/lib/supabase/client'
 import { formatCurrency } from '@/lib/utils'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { 
-  Scissors, 
-  Clock, 
-  Phone, 
-  MapPin, 
-  Star, 
+import {
+  Scissors,
+  Clock,
+  Phone,
+  MapPin,
+  Star,
   Calendar,
   ChevronRight,
   Instagram,
@@ -58,14 +58,14 @@ export default function HomePage() {
     const checkUserAndData = async () => {
       // 1. Verificar usuario
       const { data: { user: authUser } } = await supabase.auth.getUser()
-      
+
       if (authUser) {
         const { data: profile } = await supabase
           .from('profiles')
           .select('full_name, email, role, avatar_url')
           .eq('id', authUser.id)
           .single()
-        
+
         if (profile) {
           setUser(profile as UserProfile)
         }
@@ -153,7 +153,7 @@ export default function HomePage() {
               <Scissors className="w-8 h-8 text-amber-400" />
               <span className="text-2xl font-bold tracking-wider">BarberSite</span>
             </div>
-            
+
             {/* Links Generales */}
             <div className="hidden md:flex items-center gap-6 mr-4">
               <Link href="/tienda" className="flex items-center gap-2 text-zinc-300 hover:text-amber-400 font-bold uppercase tracking-widest text-xs transition">
@@ -166,7 +166,7 @@ export default function HomePage() {
               {user ? (
                 <div className="flex items-center gap-4">
                   {/* Panel según rol */}
-                  <Link 
+                  <Link
                     href={getPanelUrl(user.role)}
                     className="hidden sm:flex items-center gap-2 px-4 py-2 bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 rounded-lg transition"
                   >
@@ -190,7 +190,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Botón cerrar sesión */}
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition"
                   >
@@ -200,14 +200,14 @@ export default function HomePage() {
                 </div>
               ) : (
                 <>
-                  <Link 
-                    href="/login" 
+                  <Link
+                    href="/login"
                     className="px-6 py-2 border border-amber-400 text-amber-400 rounded-full hover:bg-amber-400 hover:text-black transition uppercase text-sm tracking-widest"
                   >
                     Login
                   </Link>
-                  <Link 
-                    href="/reservar" 
+                  <Link
+                    href="/reservar"
                     className="px-6 py-2 bg-amber-400 text-black rounded-full hover:bg-amber-300 transition uppercase text-sm font-bold tracking-widest"
                   >
                     Reservar
@@ -224,7 +224,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1920')] bg-cover bg-center">
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
         </div>
-        
+
         <div className="relative z-10 text-center max-w-4xl px-4">
           <div className="flex items-center justify-center gap-2 mb-6">
             <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
@@ -233,37 +233,37 @@ export default function HomePage() {
             <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
             <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
           </div>
-          
+
           <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">
             ESTILO <span className="text-amber-400">CLÁSICO</span><br />
             MODERNO
           </h1>
-          
+
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Donde la tradición barbera se encuentra con la innovación. 
+            Donde la tradición barbera se encuentra con la innovación.
             Experimenta el arte del cuidado masculino en su máxima expresión.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             {user ? (
-              <Link 
-                href={getPanelUrl(user.role)} 
+              <Link
+                href={getPanelUrl(user.role)}
                 className="inline-flex items-center justify-center gap-2 bg-amber-400 text-black px-8 py-4 rounded-full font-bold hover:bg-amber-300 transition transform hover:scale-105 uppercase tracking-widest"
               >
                 <Calendar className="w-5 h-5" />
                 Ir al Panel
               </Link>
             ) : (
-              <Link 
-                href="/reservar" 
+              <Link
+                href="/reservar"
                 className="inline-flex items-center justify-center gap-2 bg-amber-400 text-black px-8 py-4 rounded-full font-bold hover:bg-amber-300 transition transform hover:scale-105 uppercase tracking-widest"
               >
                 <Calendar className="w-5 h-5" />
                 Reservar Cita
               </Link>
             )}
-            <Link 
-              href="/tienda" 
+            <Link
+              href="/tienda"
               className="inline-flex items-center justify-center gap-2 border border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-black transition uppercase tracking-widest"
             >
               <ShoppingBag className="w-5 h-5" />
@@ -271,7 +271,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        
+
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronRight className="w-8 h-8 text-white/50 rotate-90" />
@@ -303,10 +303,10 @@ export default function HomePage() {
             <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Nuestros Servicios</p>
             <h2 className="text-5xl font-bold">Cortes & Estilos</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {servicios?.map((servicio) => (
-              <div 
+              <div
                 key={servicio.id}
                 className="group bg-black border border-white/10 rounded-2xl overflow-hidden hover:border-amber-400/50 transition-all duration-300"
               >
@@ -318,11 +318,11 @@ export default function HomePage() {
                     </div>
                     <h3 className="text-xl font-bold">{servicio.nombre}</h3>
                   </div>
-                  
+
                   <p className="text-gray-400 mb-4 min-h-12">
                     {servicio.descripcion || 'Servicio premium de barbería'}
                   </p>
-                  
+
                   <div className="flex items-center justify-between pt-4 border-t border-white/10">
                     <div>
                       <p className="text-3xl font-bold text-amber-400">{formatCurrency(servicio.precio)}</p>
@@ -348,7 +348,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          
+
           {(!servicios || servicios.length === 0) && (
             <div className="text-center py-16">
               <Scissors className="w-16 h-16 text-gray-600 mx-auto mb-4" />
@@ -367,8 +367,8 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="aspect-[4/5] rounded-2xl overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800" 
+                <img
+                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800"
                   alt="Barbería"
                   className="w-full h-full object-cover"
                 />
@@ -380,17 +380,17 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Acerca de Nosotros</p>
-              <h2 className="text-5xl font-bold mb-6">La Mejor Barbería<br/>de la Ciudad</h2>
+              <h2 className="text-5xl font-bold mb-6">La Mejor Barbería<br />de la Ciudad</h2>
               <p className="text-gray-400 mb-6 text-lg">
-                En BarberSite, combinamos técnicas tradicionales con las últimas tendencias 
-                para ofrecerte una experiencia única. Nuestro compromiso es con la excelencia 
-                en cada detalle, desde el momento en que entras hasta que sales luciendo 
+                En BarberSite, combinamos técnicas tradicionales con las últimas tendencias
+                para ofrecerte una experiencia única. Nuestro compromiso es con la excelencia
+                en cada detalle, desde el momento en que entras hasta que sales luciendo
                 tu mejor versión.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-6 mb-8">
                 {[
                   { numero: '5000+', texto: 'Clientes Satisfechos' },
@@ -404,9 +404,9 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-              
+
               {user ? (
-                <Link 
+                <Link
                   href={getPanelUrl(user.role)}
                   className="inline-flex items-center gap-2 bg-amber-400 text-black px-8 py-4 rounded-full font-bold hover:bg-amber-300 transition"
                 >
@@ -414,7 +414,7 @@ export default function HomePage() {
                   <ChevronRight className="w-5 h-5" />
                 </Link>
               ) : (
-                <Link 
+                <Link
                   href="/register"
                   className="inline-flex items-center gap-2 bg-amber-400 text-black px-8 py-4 rounded-full font-bold hover:bg-amber-300 transition"
                 >
@@ -435,13 +435,13 @@ export default function HomePage() {
               <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Grooming Premium</p>
               <h2 className="text-5xl font-bold">Tienda Pro</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {productos.map((producto) => (
                 <div key={producto.id} className="bg-zinc-900/50 rounded-2xl overflow-hidden border border-white/5 group hover:border-amber-500/30 transition-all">
                   <div className="aspect-square bg-zinc-800 relative overflow-hidden">
-                    <img 
-                      src={producto.image_url || 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500'} 
+                    <img
+                      src={producto.image_url || 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500'}
                       alt={producto.nombre}
                       className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                     />
@@ -458,8 +458,8 @@ export default function HomePage() {
             </div>
 
             <div className="mt-16 text-center">
-              <Link 
-                href="/tienda" 
+              <Link
+                href="/tienda"
                 className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-amber-500 text-amber-500 px-8 py-4 rounded-full font-bold hover:bg-amber-500 hover:text-black transition uppercase tracking-widest"
               >
                 <ShoppingBag className="w-5 h-5" />
@@ -477,7 +477,7 @@ export default function HomePage() {
             <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Nuestro Equipo</p>
             <h2 className="text-5xl font-bold">Barberos Expertos</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { nombre: 'Carlos Rodríguez', especialidad: 'Cortes Clásicos', imagen: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400' },
@@ -487,8 +487,8 @@ export default function HomePage() {
               <div key={i} className="group text-center">
                 <div className="relative inline-block mb-6">
                   <div className="w-64 h-64 rounded-full overflow-hidden mx-auto">
-                    <img 
-                      src={barbero.imagen} 
+                    <img
+                      src={barbero.imagen}
                       alt={barbero.nombre}
                       className="w-full h-full object-cover blur-[3px] grayscale opacity-70 group-hover:blur-[0px] group-hover:grayscale-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-500"
                     />
@@ -499,7 +499,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">{barbero.nombre}</h3>
                 <div className="flex justify-center gap-1">
-                  {[1,2,3,4,5].map((_, j) => (
+                  {[1, 2, 3, 4, 5].map((_, j) => (
                     <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
@@ -516,23 +516,23 @@ export default function HomePage() {
             <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Testimonios</p>
             <h2 className="text-5xl font-bold">Lo Que Dicen</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { 
-                nombre: 'Carlos M.', 
+              {
+                nombre: 'Carlos M.',
                 texto: 'El mejor corte que he tenido. Los barberos son verdaderos profesionales que conocen su oficio.',
-                estrellas: 5 
+                estrellas: 5
               },
-              { 
-                nombre: 'Ana G.', 
+              {
+                nombre: 'Ana G.',
                 texto: 'Excelente atención y ambiente. Mi esposo siempre queda satisfecho con su corte.',
-                estrellas: 5 
+                estrellas: 5
               },
-              { 
-                nombre: 'Roberto D.', 
+              {
+                nombre: 'Roberto D.',
                 texto: 'Desde que descubrí BarberSite, no voy a otro lugar. Calidad garantizada y precios justos.',
-                estrellas: 5 
+                estrellas: 5
               }
             ].map((testimonio, i) => (
               <div key={i} className="bg-zinc-900 p-8 rounded-2xl">
@@ -559,7 +559,7 @@ export default function HomePage() {
               <p className="text-gray-400 mb-8 text-lg">
                 Estamos ubicados en un lugar privilegiado. ¡Te esperamos!
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
@@ -570,7 +570,7 @@ export default function HomePage() {
                     <p className="text-gray-400">Edif. Antezana, calle Sucre, Cochabamba</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
                     <Phone className="w-6 h-6 text-black" />
@@ -580,7 +580,7 @@ export default function HomePage() {
                     <p className="text-gray-400">+591 71234567</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
                     <Clock className="w-6 h-6 text-black" />
@@ -590,7 +590,7 @@ export default function HomePage() {
                     <p className="text-gray-400">Lunes a Sábado: 9:00 - 21:00<br />Domingo: Cerrado</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-amber-400 rounded-xl flex items-center justify-center shrink-0">
                     <Mail className="w-6 h-6 text-black" />
@@ -601,7 +601,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Redes sociales */}
               <div className="flex gap-4 mt-8">
                 <a href="#" className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-400 transition">
@@ -618,10 +618,10 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
-            
+
             {/* Mapa */}
             <div className="bg-zinc-800 rounded-2xl overflow-hidden h-[500px]">
-              <iframe 
+              <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.3821644859213!2d-66.1548148237828!3d-17.393438064360744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3730afb6974d5%3A0xf6413d9e8b60ca50!2sBarber%20Site!5e0!3m2!1ses-419!2sbo!4v1771741041111!5m2!1ses-419!2sbo"
                 width="100%"
                 height="100%"
@@ -661,16 +661,16 @@ export default function HomePage() {
               <Scissors className="w-8 h-8 text-amber-400" />
               <span className="text-xl font-bold tracking-wider">BarberSite</span>
             </div>
-            
+
             <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-400">
               <a href="#servicios" className="hover:text-amber-400 transition">Servicios</a>
               <a href="#acerca" className="hover:text-amber-400 transition">Nosotros</a>
               <a href="#equipo" className="hover:text-amber-400 transition">Equipo</a>
               <a href="#contacto" className="hover:text-amber-400 transition">Contacto</a>
             </div>
-            
+
             <p className="text-gray-500 text-sm">
-              © 2024 BarberSite. Todos los derechos reservados.
+              © 2026 BarberSite. Todos los derechos reservados. Cochabamba, Bolivia.
             </p>
           </div>
         </div>
