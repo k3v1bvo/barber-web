@@ -20,7 +20,8 @@ import {
   Twitter,
   LogOut,
   LayoutDashboard,
-  Loader2
+  Loader2,
+  ShoppingBag
 } from 'lucide-react'
 
 interface UserProfile {
@@ -133,6 +134,13 @@ export default function HomePage() {
               <span className="text-2xl font-bold tracking-wider">BarberSite</span>
             </div>
             
+            {/* Links Generales */}
+            <div className="hidden md:flex items-center gap-6 mr-4">
+              <Link href="/tienda" className="flex items-center gap-2 text-zinc-300 hover:text-amber-400 font-bold uppercase tracking-widest text-xs transition">
+                <ShoppingBag size={16} /> Tienda Pro
+              </Link>
+            </div>
+
             {/* Usuario logueado o botones de auth */}
             <div className="flex items-center gap-4">
               {user ? (
@@ -235,11 +243,11 @@ export default function HomePage() {
               </Link>
             )}
             <Link 
-              href="#servicios" 
+              href="/tienda" 
               className="inline-flex items-center justify-center gap-2 border border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-black transition uppercase tracking-widest"
             >
-              Ver Servicios
-              <ChevronRight className="w-5 h-5" />
+              <ShoppingBag className="w-5 h-5" />
+              Explorar Tienda
             </Link>
           </div>
         </div>

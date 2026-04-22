@@ -5,12 +5,33 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Scissors, User } from 'lucide-react'
 import { AsistenciaWidget } from '@/components/ui/AsistenciaWidget'
+import { FiltroAgenda } from '@/components/ui/FiltroAgenda'
 
-
-export default async function RecepcionPage() {
+export default async function RecepcionPage(props: { searchParams: Promise<{ date?: string, view?: string }> }) {
+  const searchParams = await props.searchParams
   const supabase = await createServerSupabaseClient()
 
   const today = new Date().toISOString().split('T')[0]
+  const dateStr = searchParams?.date || today
+  const view = searchParams?.view || 'day'
+
+  let start = `${dateStr}T00:00:00`
+  let end = `${dateStr}T23:59:59`
+
+  if (view === 'week') {
+    const d = new Date(dateStr)
+    d.setDate(d.getDate() + 6) // Añadir 6 días (7 días en total)
+    end = `${d.toISOString().split('T')[0]}T23:59:59`
+  } else if (view === 'month') {
+    const d = new Date(dateStr)
+    const y = d.getFullYear()
+    const m = d.getMonth()
+    const lastDay = new Date(y, m + 1, 0).getDate()
+    const mStr = String(m + 1).padStart(2, '0')
+    // El inicio será el primer día del mes, y el final el último día del mes
+    start = `${y}-${mStr}-01T00:00:00`
+    end = `${y}-${mStr}-${String(lastDay).padStart(2, '0')}T23:59:59`
+  }
 
   const { data: citas } = await supabase
     .from('citas')
@@ -20,7 +41,8 @@ export default async function RecepcionPage() {
       barbero:profiles!barbero_id(full_name),
       servicio:servicios(*)
     `)
-    .gte('fecha_hora', today)
+    .gte('fecha_hora', start)
+    .lte('fecha_hora', end)
     .order('fecha_hora', { ascending: true })
 
   const { data: servicios } = await supabase
@@ -55,12 +77,15 @@ export default async function RecepcionPage() {
             Gestión de <span className="text-amber-500">Recepción</span>
           </h1>
           <p className="text-zinc-500 font-medium mt-1">
-            {new Date().toLocaleDateString('es-MX', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            Visualizando {view === 'day' ? 'Día' : view === 'week' ? 'Semana' : 'Mes'}: {new Date(dateStr + 'T12:00:00').toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-           <Button variant="secondary" size="md">Imprimir Reporte</Button>
-           <Button variant="primary" size="md" className="shadow-lg shadow-amber-500/20">Cerrar Caja</Button>
+        <div className="flex flex-col items-end gap-4">
+           <FiltroAgenda />
+           <div className="flex items-center gap-3">
+             <Button variant="secondary" size="md">Imprimir Reporte</Button>
+             <Button variant="primary" size="md" className="shadow-lg shadow-amber-500/20">Cerrar Caja</Button>
+           </div>
         </div>
       </div>
 
@@ -69,7 +94,7 @@ export default async function RecepcionPage() {
         <div className="lg:col-span-2 space-y-6">
           <Card className="border-amber-500/10">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>📅 Citas del Día</CardTitle>
+              <CardTitle>📅 Citas Programadas</CardTitle>
               <Badge variant="outline" className="border-zinc-800 text-zinc-500 uppercase font-black text-[10px] tracking-widest">{citas?.length || 0} Total</Badge>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
@@ -79,9 +104,16 @@ export default async function RecepcionPage() {
                     <div className="flex justify-between items-start">
                       <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                          <p className="font-black text-2xl text-white tracking-tighter">
-                            {new Date(cita.fecha_hora).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
-                          </p>
+                          <div className="flex flex-col">
+                            <p className="font-black text-2xl text-white tracking-tighter leading-none">
+                              {new Date(cita.fecha_hora).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            {(view === 'week' || view === 'month') && (
+                               <p className="text-[10px] text-amber-500 font-bold uppercase mt-1">
+                                 {new Date(cita.fecha_hora).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' })}
+                               </p>
+                            )}
+                          </div>
                           <Badge variant={
                             cita.estado === 'completado' ? 'success' :
                               cita.estado === 'en_proceso' ? 'info' :
@@ -137,7 +169,7 @@ export default async function RecepcionPage() {
                 ))
               ) : (
                 <div className="text-center py-12 bg-white/5 rounded-2xl border border-dashed border-white/5">
-                  <p className="text-zinc-500 font-medium italic">No hay citas programadas para hoy</p>
+                  <p className="text-zinc-500 font-medium italic">No hay citas programadas para este periodo</p>
                 </div>
               )}
             </CardContent>
