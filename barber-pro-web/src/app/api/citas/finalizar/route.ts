@@ -79,6 +79,22 @@ export async function POST(request: Request) {
       }
     }
 
+    // Insertar Notificaciones
+    await supabase.from('notificaciones').insert([
+      {
+        user_id: cita.barbero_id,
+        titulo: '💰 Cita Finalizada',
+        mensaje: `Tu cita ha sido completada y cobrada con éxito.`,
+        tipo: 'success'
+      },
+      {
+        rol_destino: 'admin',
+        titulo: '💳 Ingreso Registrado',
+        mensaje: `Se ha registrado el pago de una cita por ${cita.precio}.`,
+        tipo: 'success'
+      }
+    ])
+
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json({ error: 'Error al finalizar cita' }, { status: 500 })

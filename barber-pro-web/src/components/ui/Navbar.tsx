@@ -21,8 +21,10 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { CampanaNotificaciones } from './CampanaNotificaciones'
 
 interface UserProfile {
+  id: string
   full_name: string
   email: string
   role: string
@@ -44,7 +46,7 @@ export function Navbar() {
       if (authUser) {
         const { data: profile } = await supabase
           .from('profiles')
-          .select('full_name, email, role, avatar_url')
+          .select('id, full_name, email, role, avatar_url')
           .eq('id', authUser.id)
           .single()
 
@@ -149,10 +151,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              <button className="p-2 text-zinc-400 hover:text-white relative">
-                <Bell size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-amber-500 rounded-full border border-black shadow-sm"></span>
-              </button>
+              <CampanaNotificaciones userId={user.id || ''} userRole={user.role} />
               
               <div className="h-8 w-px bg-white/10 mx-2" />
 
@@ -200,9 +199,11 @@ export function Navbar() {
           <Scissors className="w-6 h-6 glow-amber" />
           <span>BARBER PRO</span>
         </Link>
-        <button className="w-10 h-10 flex items-center justify-center text-zinc-400">
-           <Bell size={20} />
-        </button>
+        {user ? (
+           <CampanaNotificaciones userId={user.id || ''} userRole={user.role} />
+        ) : (
+           <div className="w-10"></div>
+        )}
       </header>
 
       {/* --- MOBILE BOTTOM NAV (UX Essential) --- */}

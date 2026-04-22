@@ -11,6 +11,7 @@ export function AsistenciaWidget() {
   const [submitting, setSubmitting] = useState(false)
   const [asistencia, setAsistencia] = useState<any>(null)
   const [userId, setUserId] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string>('Un colaborador')
   const [tiempoTranscurrido, setTiempoTranscurrido] = useState<string>('00:00:00')
   
   const supabase = createClient()
@@ -45,6 +46,9 @@ export function AsistenciaWidget() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       setUserId(user.id)
+      
+      const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
+      if (profile?.full_name) setUserName(profile.full_name)
 
       const hoy = new Date().toISOString().split('T')[0]
 
@@ -82,6 +86,14 @@ export function AsistenciaWidget() {
         
       if (error) throw error
       setAsistencia(data)
+
+      // Insertar Notificación para el Admin
+      await supabase.from('notificaciones').insert({
+        rol_destino: 'admin',
+        titulo: '⏰ Nueva Entrada',
+        mensaje: `${userName} ha iniciado su turno de trabajo.`,
+        tipo: 'info'
+      })
     } catch (error: any) {
       alert('Error registrando entrada: ' + error.message)
     } finally {
@@ -109,6 +121,14 @@ export function AsistenciaWidget() {
         
       if (error) throw error
       setAsistencia(data)
+
+      // Insertar Notificación para el Admin
+      await supabase.from('notificaciones').insert({
+        rol_destino: 'admin',
+        titulo: '🏁 Fin de Turno',
+        mensaje: `${userName} ha finalizado su turno tras ${horas.toFixed(2)} horas.`,
+        tipo: 'success'
+      })
     } catch (error: any) {
       alert('Error registrando salida: ' + error.message)
     } finally {

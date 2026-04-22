@@ -250,8 +250,24 @@ function ReservarContent() {
       throw new Error(citaError.message)
     }
 
-    // ✅ ENVIAR NOTIFICACIÓN POR EMAIL
+    // Insertar Notificaciones In-App
     const barbero = barberos.find(b => b.id === formData.barbero_id)
+    await supabase.from('notificaciones').insert([
+      {
+        user_id: formData.barbero_id,
+        titulo: '📅 Nueva Cita Agendada',
+        mensaje: `${formData.nombre} ha reservado para el ${formData.fecha} a las ${formData.hora}.`,
+        tipo: 'info'
+      },
+      {
+        rol_destino: 'admin',
+        titulo: '📅 Nueva Reserva (Sistema)',
+        mensaje: `Nueva cita de ${formData.nombre} con ${barbero?.full_name} (${formData.fecha} ${formData.hora}).`,
+        tipo: 'info'
+      }
+    ])
+
+    // ✅ ENVIAR NOTIFICACIÓN POR EMAIL
     try {
       await fetch('/api/emails/confirmacion', {
         method: 'POST',
