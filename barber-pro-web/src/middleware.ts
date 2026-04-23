@@ -52,11 +52,12 @@ export async function middleware(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin')
   const isRecepcionRoute = request.nextUrl.pathname.startsWith('/recepcion')
   const isBarberoRoute = request.nextUrl.pathname.startsWith('/barbero')
+  const isReservarRoute = request.nextUrl.pathname.startsWith('/reservar')
   const isLoginPage = request.nextUrl.pathname === '/login'
   const isRegisterPage = request.nextUrl.pathname === '/register'
 
   // Si no está logueado y trata de acceder a rutas protegidas
-  if (!user && (isAdminRoute || isRecepcionRoute || isBarberoRoute)) {
+  if (!user && (isAdminRoute || isRecepcionRoute || isBarberoRoute || isReservarRoute)) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
@@ -85,6 +86,7 @@ export const config = {
     '/admin/:path*',
     '/recepcion/:path*',
     '/barbero/:path*',
+    '/reservar',
     '/login',
     '/register',
   ],

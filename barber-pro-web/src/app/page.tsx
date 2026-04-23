@@ -154,13 +154,6 @@ export default function HomePage() {
               <span className="text-2xl font-bold tracking-wider">BarberSite</span>
             </div>
 
-            {/* Links Generales */}
-            <div className="hidden md:flex items-center gap-6 mr-4">
-              <Link href="/tienda" className="flex items-center gap-2 text-zinc-300 hover:text-amber-400 font-bold uppercase tracking-widest text-xs transition">
-                <ShoppingBag size={16} /> Tienda Pro
-              </Link>
-            </div>
-
             {/* Usuario logueado o botones de auth */}
             <div className="flex items-center gap-4">
               {user ? (
