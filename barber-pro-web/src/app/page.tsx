@@ -658,12 +658,13 @@ export default function HomePage() {
             <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-400">
               <a href="#servicios" className="hover:text-amber-400 transition">Servicios</a>
               <a href="#acerca" className="hover:text-amber-400 transition">Nosotros</a>
+              <a href="#tienda" className="hover:text-amber-400 transition">Tienda</a>
               <a href="#equipo" className="hover:text-amber-400 transition">Equipo</a>
               <a href="#contacto" className="hover:text-amber-400 transition">Contacto</a>
             </div>
 
             <p className="text-gray-500 text-sm">
-              © 2026 BarberSite. Todos los derechos reservados. Cochabamba, Bolivia.
+              © 2026 BarberSite. Todos los derechos reservados. Cochabamba, Bolivia. -k3v1bvo Studios, designed by k3v1bvo-
             </p>
           </div>
         </div>
