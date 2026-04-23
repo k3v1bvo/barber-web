@@ -154,12 +154,7 @@ export default function HomePage() {
               <span className="text-2xl font-bold tracking-wider">BarberSite</span>
             </div>
 
-            {/* Links Generales */}
-            <div className="hidden md:flex items-center gap-6 mr-4">
-              <Link href="/tienda" className="flex items-center gap-2 text-zinc-300 hover:text-amber-400 font-bold uppercase tracking-widest text-xs transition">
-                <ShoppingBag size={16} /> Tienda Pro
-              </Link>
-            </div>
+
 
             {/* Usuario logueado o botones de auth */}
             <div className="flex items-center gap-4">
@@ -432,8 +427,8 @@ export default function HomePage() {
         <section id="tienda" className="py-24 bg-black border-t border-white/5">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center mb-16">
-              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Grooming Premium</p>
-              <h2 className="text-5xl font-bold">Tienda Pro</h2>
+              <p className="text-amber-400 uppercase tracking-widest text-sm font-bold mb-4">Productos Premium</p>
+              <h2 className="text-5xl font-bold">Nuestra Tienda </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -441,7 +436,7 @@ export default function HomePage() {
                 <div key={producto.id} className="bg-zinc-900/50 rounded-2xl overflow-hidden border border-white/5 group hover:border-amber-500/30 transition-all">
                   <div className="aspect-square bg-zinc-800 relative overflow-hidden">
                     <img
-                      src={producto.image_url || 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500'}
+                      src={producto.image_url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtwPAwwWP2O-Aw-u9VMJ2-gLrQsH_W9ybVtA&s'}
                       alt={producto.nombre}
                       className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                     />

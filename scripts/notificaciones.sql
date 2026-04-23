@@ -1,5 +1,8 @@
+-- Eliminar la tabla si existe para evitar conflictos de columnas faltantes
+drop table if exists public.notificaciones cascade;
+
 -- Crear tabla de Notificaciones
-create table if not exists public.notificaciones (
+create table public.notificaciones (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users(id) on delete cascade, -- Nulo si es un aviso para todo un rol
   rol_destino text, -- Ej: 'admin', 'barbero', 'recepcionista'
